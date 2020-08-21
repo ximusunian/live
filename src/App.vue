@@ -5,6 +5,7 @@
 </template>
 
 <style lang="scss">
+@import "./assets/reset.scss";
 *{
   padding: 0;
   margin: 0;

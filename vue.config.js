@@ -53,8 +53,9 @@ module.exports = {
     // http 代理配置
     proxy: {      
       '/huitongyi': {
-        target: 'http://47.99.192.119:8100',
+        // target: 'http://47.99.192.119:8100',
         // target: 'http://196.168.0.144:8100',
+        target: "http://120.55.95.100:8100",
         changeOrigin: true,
         pathRewrite: {          
             // ['^/' + process.env.BASE_API]: ''

@@ -37,17 +37,18 @@ export default {
     },
 
     downloadApp() {
-      const u = navigator.userAgent;
-      const isWechart = u.match(/MicroMessenger/i) == "MicroMessenger"
-      if(isWechart) {
-        this.$toast("请在浏览器打开，进行下载")
-      } else {
-        if(this.showBtn === "android") {
-          window.location.href = "http://www.baidu.com"
-        } else {
-          window.location.href = "http://www.baidu.com"
-        }
-      }
+      // const u = navigator.userAgent;
+      // const isWechart = u.match(/MicroMessenger/i) == "MicroMessenger"
+      // if(isWechart) {
+      //   this.$toast("请在浏览器打开，进行下载")
+      // } else {
+      //   if(this.showBtn === "android") {
+      //     window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yigai.com"
+      //   } else {
+      //     window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yigai.com"
+      //   }
+      // }
+      window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yigai.com"
     }
   }
 };

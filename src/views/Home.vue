@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="home">
     <div class="live_header">
       <div class="head_left">
         <img :src="shopHeadImg" class="live_logo" />
@@ -13,10 +13,14 @@
     <div id="id_test_video" style="width:100%; height:100%;"></div>
     <barrage :barrage="barrageTxt"></barrage>
     <div class="input_cate">
-      <span class="img" @click="goRegisterPage">
-        {{productNum}}
-      </span>
-      <van-field :formatter="trim" v-model="barrage" type="text" placeholder="跟主播聊点什么吧" @blur="sendTxt" />
+      <span class="img" @click="goRegisterPage">{{productNum}}</span>
+      <van-field
+        :formatter="trim"
+        v-model="barrage"
+        type="text"
+        placeholder="跟主播聊点什么吧"
+        @blur="sendTxt"
+      />
       <div class="heart">
         <span class="likeNo">{{likeNo}}</span>
         <img src="../assets/give_like.png" class="heart_icon" @click="giveLike" />
@@ -26,9 +30,9 @@
 </template>
 
 <script>
-import barrage from "./barrage"
-import head_img_default from "../assets/live_head_default.png"
-import live_placeholder_bg from "../assets/live_placeholder_bg.png"
+import barrage from "./barrage";
+import head_img_default from "../assets/live_head_default.png";
+import live_placeholder_bg from "../assets/live_placeholder_bg.png";
 import generateRandomId from "../utils/generateRandomId";
 export default {
   name: "Home",
@@ -45,40 +49,44 @@ export default {
       likeNo: 0,
       watchNum: 0,
       groupID: "",
-      productNum: "",     
+      productNum: "",
       barrage: "",
       barrageTxt: {} // 发送及接受的消息信息
     };
   },
   created() {
-    let inviteToken = this.$route.query.inviteToken
-    localStorage.setItem("inviteToken", inviteToken)
-    this.init()
+    let inviteToken = this.$route.query.inviteToken;
+    localStorage.setItem("inviteToken", inviteToken);
+    this.init();
   },
 
   mounted() {
-    if(this.url === undefined || this.url === null || this.url === "") {
-      this.$toast("缺少直播间地址")
+    if (this.url === undefined || this.url === null || this.url === "") {
+      this.$toast("缺少直播间地址");
     } else {
-      this.openLive()
+      this.openLive();
     }
+    document.body.addEventListener('mousedown', function(){
+        var vdo = document.getElementsByTagName("video")[0];
+        vdo.muted = false;
+    }, false); 
   },
   methods: {
-// 工具性函数区--------------------------------------------------------------
+    // 工具性函数区--------------------------------------------------------------
     // 去除输入框中空格
     trim(value) {
       return value.replace(/\s+/g, "");
     },
-// --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
 
-// IM回调处理函数区-----------------------------------------------------------
+    // IM回调处理函数区-----------------------------------------------------------
     // 发送消息
     _handleTextMsg(message) {
       this.barrageTxt = {
         nick: message.nick,
         text: message.payload.text,
         time: message.time
-      }
+      };
     },
 
     _handleCustomMsg(message) {
@@ -111,36 +119,36 @@ export default {
 
     // 系统消息
     _handleGroupSystemNotice(message) {
-      let data = JSON.parse(message.payload.userDefinedField)
+      let data = JSON.parse(message.payload.userDefinedField);
       // type: 3 -> 进入直播；5 -> 点赞；6 -> 观看人数
-      if(data.type  === 3) {
+      if (data.type === 3) {
         this.barrageTxt = {
           nick: "",
           text: data.message,
           time: message.time
-        }
-      } else if(data.type === 5) {
-        this.likeNo = data.message
-      } else if(data.type === 6) {
-        this.watchNum = data.message
+        };
+      } else if (data.type === 5) {
+        this.likeNo = data.message;
+      } else if (data.type === 6) {
+        this.watchNum = data.message;
       }
     },
-//-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
 
-//自定义功能函数区--------------------------------------------------------------------
+    //自定义功能函数区--------------------------------------------------------------------
     // 初始化项目
     init() {
-      this.getUserSig()
-      if(this.url === undefined || this.url === null || this.url === "") {
-        this.$toast("缺少直播间地址")
+      this.getUserSig();
+      if (this.url === undefined || this.url === null || this.url === "") {
+        this.$toast("缺少直播间地址");
       } else {
-        this.getLiveDetail(this.url)
+        this.getLiveDetail(this.url);
       }
     },
 
     // 初始化直播间，并挂载消息监听
     openLive() {
-      let liveUrl = this.url
+      let liveUrl = this.url;
       var player = new TcPlayer("id_test_video", {
         m3u8: liveUrl, //请替换成实际可用的播放地址
         autoplay: true, //iOS 下 safari 浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
@@ -148,12 +156,10 @@ export default {
         flash: false,
         controls: "none",
         poster: live_placeholder_bg,
-        listener: function(msg){
-          console.log("msg------------------>",msg);
-        }
       });
+      player.mute(true);
 
-      let _this = this
+      let _this = this;
       // IM消息监听
       this.tim.on(this.TIM.EVENT.MESSAGE_RECEIVED, function(event) {
         // 收到推送的单聊、群聊、群提示、群系统通知的新消息，可通过遍历 event.data 获取消息列表数据并渲染到页面
@@ -185,14 +191,14 @@ export default {
         }
       });
     },
-     
-     // 获取用户sig
+
+    // 获取用户sig
     getUserSig() {
       // 生成随机userId
       let userId = generateRandomId();
       this.$api.getUserSig({ userId: userId }).then(res => {
         if (res.result === 100) {
-          this.login(userId, res.data)
+          this.login(userId, res.data);
         }
       });
     },
@@ -200,60 +206,64 @@ export default {
     // IM登录
     login(userId, userSig) {
       this.tim.login({
-          userID: String(userId),
-          userSig: userSig
-        });
+        userID: String(userId),
+        userSig: userSig
+      });
     },
 
     // 获取直播详情
     getLiveDetail(url) {
-      let token = localStorage.getItem("token") || ""
-      this.$api.getLiveDetail({ webUrl : url, token: token }).then(res => {
-        if (res.result === 100) {
-          this.likeNo = res.data.likeNum
-          this.watchNum = res.data.watchNum
-          this.shopName = res.data.shopName
-          this.shopHeadImg = res.data.shopHeadImg
-          this.groupID = res.data.imGroupId
-          this.productNum = res.data.productNum
-          localStorage.setItem("playNo", res.data.playNo);
-        } else {
-          this.$toast(res.message);
-        }
-      }).then(()=> {
-        this.joinGroup()
-      });
+      let token = localStorage.getItem("token") || "";
+      this.$api
+        .getLiveDetail({ webUrl: url, token: token })
+        .then(res => {
+          if (res.result === 100) {
+            this.likeNo = res.data.likeNum;
+            this.watchNum = res.data.watchNum;
+            this.shopName = res.data.shopName;
+            this.shopHeadImg = res.data.shopHeadImg;
+            this.groupID = res.data.imGroupId;
+            this.productNum = res.data.productNum;
+            localStorage.setItem("playNo", res.data.playNo);
+          } else {
+            this.$toast(res.message);
+          }
+        })
+        .then(() => {
+          this.joinGroup();
+        });
     },
-   
+
     // 加入群组
     joinGroup() {
-      let groupID = this.groupID
+      let groupID = this.groupID;
       let promise = this.tim.joinGroup({
         groupID: groupID,
         type: this.TIM.TYPES.GRP_AVCHATROOM
       });
-      let _this = this
-      promise.then(function(imResponse) {
-        switch (imResponse.data.status) {
-          case _this.TIM.TYPES.JOIN_STATUS_WAIT_APPROVAL: // 等待管理员同意
-            break;
-          case _this.TIM.TYPES.JOIN_STATUS_SUCCESS: // 加群成功
-            _this.addWatcher()
-            break;
-          case _this.TIM.TYPES.JOIN_STATUS_ALREADY_IN_GROUP: // 已经在群中
-            break;
-          default:
-            break;
-        }
-      })
-      .catch(function(imError) {
-        console.warn("joinGroup error:", imError); // 申请加群失败的相关信息
-      });
+      let _this = this;
+      promise
+        .then(function(imResponse) {
+          switch (imResponse.data.status) {
+            case _this.TIM.TYPES.JOIN_STATUS_WAIT_APPROVAL: // 等待管理员同意
+              break;
+            case _this.TIM.TYPES.JOIN_STATUS_SUCCESS: // 加群成功
+              _this.addWatcher();
+              break;
+            case _this.TIM.TYPES.JOIN_STATUS_ALREADY_IN_GROUP: // 已经在群中
+              break;
+            default:
+              break;
+          }
+        })
+        .catch(function(imError) {
+          console.warn("joinGroup error:", imError); // 申请加群失败的相关信息
+        });
     },
-    
+
     // 初始化消息列表
     initialize(msg) {
-      let groupID = this.groupID
+      let groupID = this.groupID;
       let message = this.tim.createTextMessage({
         to: groupID,
         conversationType: this.TIM.TYPES.CONV_GROUP,
@@ -268,37 +278,37 @@ export default {
     sendMessages(message) {
       // 2. 发送消息
       let promise = this.tim.sendMessage(message);
-      let _this= this
-      promise.then(function(imResponse) {
-        // 发送成功
-        console.log(imResponse);
-        _this.barrageTxt = {
-          nick: "我",
-          text: imResponse.data.message.payload.text,
-          time: imResponse.data.message.time
-        }
-        // _this.barrageList.push(imResponse.data.message.payload.text)
-      })
-      .catch(function(imError) {
-        // 发送失败
-        console.warn("sendMessage error:", imError);
-      });
+      let _this = this;
+      promise
+        .then(function(imResponse) {
+          // 发送成功
+          console.log(imResponse);
+          _this.barrageTxt = {
+            nick: "我",
+            text: imResponse.data.message.payload.text,
+            time: imResponse.data.message.time
+          };
+          // _this.barrageList.push(imResponse.data.message.payload.text)
+        })
+        .catch(function(imError) {
+          // 发送失败
+          console.warn("sendMessage error:", imError);
+        });
     },
 
     // 用户发送消息
     sendTxt() {
-      if(this.barrage !== "") {
+      if (this.barrage !== "") {
         this.initialize(this.barrage.slice(0, 24));
-      } 
+      }
     },
 
     // 增加直播间人数
     addWatcher() {
       let playNo = localStorage.getItem("playNo");
-      let token = localStorage.getItem("token") || '';
-      let params = new FormData()
-      params.append("playNo", playNo),
-      params.append("token", token)
+      let token = localStorage.getItem("token") || "";
+      let params = new FormData();
+      params.append("playNo", playNo), params.append("token", token);
       this.$api.addWatcher(params).then(res => {
         if (res.result === 100) {
         } else {
@@ -309,12 +319,12 @@ export default {
 
     // 点赞
     giveLike() {
-      let token = localStorage.getItem("token") || ""
-      let playNo = localStorage.getItem("playNo")
-      let params = new FormData()
-      params.append("playNo", playNo)
-      params.append("token", token)
-      this.$api.giveLike(params)
+      let token = localStorage.getItem("token") || "";
+      let playNo = localStorage.getItem("playNo");
+      let params = new FormData();
+      params.append("playNo", playNo);
+      params.append("token", token);
+      this.$api.giveLike(params);
     },
 
     //跳转注册页面
@@ -332,31 +342,26 @@ export default {
           // on cancel
         });
     }
-//------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
   }
 };
 </script>
 <style lang="scss" scoped>
-.van-cell {
-  width: 60%;
-  background-color: transparent;
-  padding: 0;
-}
-.van-field__control {
-  height: 0.93333rem;
-  color: #fff;
-  font-size: 0.42667rem;
-}
-.van-cell::after {
-  left: 0;
-}
-.home {
+#home {
   height: 100%;
   overflow: hidden;
   position: relative;
+  .van-cell {
+    width: 60%;
+    background-color: transparent;
+    padding: 0;
+  }
+  .van-cell::after {
+    left: 0;
+  }
   video {
-    height: 100vh!important;
-    width: auto!important;
+    height: 100vh !important;
+    width: auto !important;
   }
   .live_header {
     width: 100%;
@@ -432,7 +437,7 @@ export default {
       font-size: 13px;
       text-align: center;
       line-height: 50px;
-      color: #FFFFFF;
+      color: #ffffff;
       background-image: url("../assets/shop_store.png");
       background-size: 100% 100%;
     }
