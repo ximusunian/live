@@ -4,11 +4,11 @@
     <div class="btn" @click="downloadApp">
       <!-- 苹果下载 -->
       <button class="ios" v-if="showBtn == 'ios'">
-        <img src="../assets/icon_ios@2x.png" alt="">iphone下载
+        <img src="https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/icon_ios@2x.png" alt="">iphone下载
       </button>
       <!-- 安卓下载 -->
       <button class="andrio" v-if="showBtn == 'andriod'" >
-        <img src="../assets/icon_andiord@2x.png" alt="">android下载
+        <img src="https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/icon_andiord@2x.png" alt="">android下载
       </button>
     </div>
   </div>
@@ -56,7 +56,7 @@ export default {
 <style lang="scss" scoped>
 .download {
   height: 100%;
-  background-image: url("../assets/APP下载页面@2x.png");
+  background-image: url("https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/APP下载页面@2x.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   img {

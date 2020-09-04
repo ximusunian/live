@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <div class="logo">
-      <img src="../assets/logo@2x.png" alt />
+      <img src="https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/logo@2x.png" alt />
     </div>
     <div class="desc">
       <div class="top">工厂最新款拼团</div>

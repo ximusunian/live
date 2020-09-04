@@ -23,7 +23,7 @@
       />
       <div class="heart">
         <span class="likeNo">{{likeNo}}</span>
-        <img src="../assets/give_like.png" class="heart_icon" @click="giveLike" />
+        <img src="https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/give_like.png" class="heart_icon" @click="giveLike" />
       </div>
     </div>
   </div>
@@ -31,9 +31,9 @@
 
 <script>
 import barrage from "./barrage";
-import head_img_default from "../assets/live_head_default.png";
-import live_placeholder_bg from "../assets/live_placeholder_bg.png";
-import generateRandomId from "../utils/generateRandomId";
+import head_img_default from "https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/live_head_default.png";
+import live_placeholder_bg from "https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/live_placeholder_bg.png";
+import generateRandomId from "https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/generateRandomId";
 export default {
   name: "Home",
   components: {
@@ -438,7 +438,7 @@ export default {
       text-align: center;
       line-height: 50px;
       color: #ffffff;
-      background-image: url("../assets/shop_store.png");
+      background-image: url("https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/shop_store.png");
       background-size: 100% 100%;
     }
     .heart {

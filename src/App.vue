@@ -5,7 +5,7 @@
 </template>
 
 <style lang="scss">
-@import "./assets/reset.scss";
+@import "https://huitongyi-mall.oss-cn-hangzhou.aliyuncs.com/h5/assets/reset.scss";
 *{
   padding: 0;
   margin: 0;

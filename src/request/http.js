@@ -2,7 +2,7 @@ import Vue from 'vue'
 import axios from 'axios';
 // 设置全局axios的默认值
 axios.defaults.timeout = 10000;
-axios.defaults.baseURL = '/huitongyi/';
+axios.defaults.baseURL = 'https://weachat.htyvip.com/huitongyi/';
 
 
 // 拦截器
